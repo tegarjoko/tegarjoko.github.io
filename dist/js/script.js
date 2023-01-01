@@ -1,14 +1,24 @@
-//Humberger Line
+//Hamburger Line
 
 const hamburger = document.querySelector("#hamburger");
 const navbarmenu = document.querySelector("#navbar-menu");
 
+// show the menu when user clicks on the hamburger line
 hamburger.addEventListener("click", function () {
   hamburger.classList.toggle("hamburger-active");
   navbarmenu.classList.toggle("hidden");
 });
 
-//Navbar Fixed
+// Hide the floating menu when user clicks on anywhere
+
+window.addEventListener("click", function (e) {
+  if (e.target != hamburger && e.target != navbarmenu) {
+    hamburger.classList.remove("hamburger-active");
+    navbarmenu.classList.add("hidden");
+  }
+});
+
+//Navbar Fixed when scrolled
 
 window.onscroll = function () {
   const header = document.querySelector("header");
@@ -16,7 +26,6 @@ window.onscroll = function () {
 
   if (window.scrollY > fixedNav) {
     header.classList.add("navbar-fixed");
-
     mybutton.style.display = "block";
   } else {
     header.classList.remove("navbar-fixed");
