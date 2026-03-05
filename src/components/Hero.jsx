@@ -110,10 +110,11 @@ export default function Hero() {
 
             <div className="hero-content">
                 <div className="hero-label">// SYSTEM INITIALIZED — PORTFOLIO ONLINE</div>
-                <h1 className="hero-name" data-text="TEGAR JOKO" ref={nameRef}>
-                    <span className="hero-name-prefix">&gt;&gt;</span> TEGAR JOKO KURNIAWAN
+                <h1 className="hero-name" data-text="TEGAR JOKO KURNIAWAN" ref={nameRef}>
+                    TEGAR JOKO KURNIAWAN
                 </h1>
                 <div className="hero-subtitle">
+                    <span className="hero-name-prefix">&gt;&gt; </span>
                     {displayText}
                     <span className="cursor-blink"></span>
                 </div>
