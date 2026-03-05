@@ -84,13 +84,27 @@ body::after {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 2rem;
 }
+
+/* Separate background layer — this is the one that gets masked */
+.loading-bg {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 0;
+}
+
+/* All content above the bg layer */
+#loading>*:not(.loading-bg) {
+  position: relative;
+  z-index: 1;
+}
+
 
 #loading .load-name {
   font-family: 'Orbitron', monospace;
@@ -221,17 +235,156 @@ body::after {
   }
 }
 
-#loading.fade-out {
-  animation: loadFadeOut 0.8s ease forwards;
+
+/* ---- WELCOME glitch-out ---- */
+.load-name.glitch-out {
+  animation: glitchOut 0.45s steps(1, end) forwards;
 }
 
-@keyframes loadFadeOut {
-  to {
+@keyframes glitchOut {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+    filter: none;
+    clip-path: none;
+  }
+
+  10% {
+    transform: translateX(-6px);
+    opacity: 1;
+    filter: hue-rotate(90deg) brightness(2);
+  }
+
+  20% {
+    transform: translateX(6px);
+    opacity: 0.8;
+    filter: hue-rotate(-90deg);
+    clip-path: inset(10% 0 10% 0);
+  }
+
+  30% {
+    transform: translateX(-4px);
+    opacity: 1;
+    filter: brightness(3);
+    clip-path: inset(5% 0 30% 0);
+  }
+
+  40% {
+    transform: translateX(8px);
+    opacity: 0.5;
+    filter: hue-rotate(180deg);
+    clip-path: inset(25% 0 0% 0);
+  }
+
+  50% {
+    transform: translateX(-2px);
+    opacity: 0.8;
+    filter: none;
+    clip-path: inset(0 0 20% 0);
+  }
+
+  60% {
+    transform: translateX(4px);
+    opacity: 0.3;
+    filter: brightness(4);
+    clip-path: inset(40% 0 10% 0);
+  }
+
+  75% {
+    transform: translateX(-6px);
+    opacity: 0.1;
+    filter: hue-rotate(270deg);
+  }
+
+  100% {
+    transform: translateX(0);
     opacity: 0;
-    transform: translateY(-20px);
-    pointer-events: none;
+    filter: none;
+    clip-path: none;
   }
 }
+
+/* ---- Orange ring appears then explodes ---- */
+.reveal-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid var(--arc-orange);
+  box-shadow: 0 0 24px var(--arc-orange-glow), inset 0 0 24px rgba(255, 107, 0, 0.2);
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.reveal-ring.ring-grow {
+  animation: ringGrow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes ringGrow {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.reveal-ring.ring-explode {
+  animation: ringExplode 0.65s ease-in forwards;
+}
+
+@keyframes ringExplode {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+
+  40% {
+    transform: translate(-50%, -50%) scale(6);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(18);
+    opacity: 0;
+  }
+}
+
+/* ---- @property for animatable custom length ---- */
+@property --reveal-size {
+  syntax: '<length>';
+  initial-value: 1px;
+  inherits: false;
+}
+
+/* Inverted circle portal: mask only the dark bg layer, ring stays visible */
+#loading.circle-open .loading-bg {
+  -webkit-mask-image: radial-gradient(circle var(--reveal-size) at 50% 50%, transparent 99.9%, black 100%);
+  mask-image: radial-gradient(circle var(--reveal-size) at 50% 50%, transparent 99.9%, black 100%);
+  animation: portalOpen 1.1s ease-in forwards;
+}
+
+#loading.circle-open {
+  pointer-events: none;
+}
+
+@keyframes portalOpen {
+  from {
+    --reveal-size: 1px;
+  }
+
+  to {
+    --reveal-size: 150vmax;
+  }
+}
+
+
 
 /* ============================================================
    NAVIGATION — ARC.SYS STYLE
@@ -406,9 +559,12 @@ nav {
 #particle-canvas {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
   opacity: 0.5;
 }
+
 
 /* L-bracket corners on hero container */
 .hero-frame {
@@ -1869,4 +2025,439 @@ footer span {
 
 .proj-card:hover .proj-thumbnail {
   opacity: 0.5;
+}
+
+/* ============================================================
+   STATS COUNTER STRIP
+============================================================ */
+.stats-strip {
+  background: var(--bg-deep);
+  border-top: 1px solid var(--steel);
+  border-bottom: 1px solid var(--steel);
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.stats-strip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255, 107, 0, 0.03) 0%, transparent 40%, transparent 60%, rgba(255, 107, 0, 0.03) 100%);
+  pointer-events: none;
+}
+
+.stats-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 0 2.5rem;
+}
+
+.stat-item {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  border-right: 1px solid var(--steel);
+  position: relative;
+}
+
+.stat-item:last-child {
+  border-right: none;
+}
+
+.stat-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--arc-orange);
+  transform: translateX(-50%);
+  transition: width 1.2s ease;
+}
+
+.stats-strip .stat-item:hover::after {
+  width: 80%;
+}
+
+.stat-number {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--arc-orange);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  margin-bottom: 0.75rem;
+  text-shadow: 0 0 20px var(--arc-orange-glow);
+}
+
+.stat-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--arc-cream-dim);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+@media(max-width: 768px) {
+  .stats-inner {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 1.5rem;
+  }
+
+  .stat-item:nth-child(2) {
+    border-right: none;
+  }
+
+  .stat-item:nth-child(3) {
+    border-top: 1px solid var(--steel);
+  }
+
+  .stat-item:nth-child(4) {
+    border-top: 1px solid var(--steel);
+    border-right: none;
+  }
+}
+
+/* ============================================================
+   TERMINAL EASTER EGG
+============================================================ */
+
+/* Hint button (always visible, bottom-right) */
+.term-hint {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1500;
+  background: var(--bg-panel);
+  border: 1px solid var(--steel);
+  color: var(--arc-orange);
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.term-hint:hover {
+  border-color: var(--arc-orange);
+  box-shadow: 0 0 16px var(--arc-orange-glow);
+}
+
+.term-hint-icon {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Terminal overlay */
+.term-overlay {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1500;
+  width: min(520px, calc(100vw - 2rem));
+  animation: termSlideIn 0.2s ease forwards;
+}
+
+@keyframes termSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.term-box {
+  background: rgba(10, 11, 14, 0.97);
+  border: 1px solid var(--arc-orange);
+  box-shadow: 0 0 40px rgba(255, 107, 0, 0.15), 0 16px 40px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  max-height: 400px;
+}
+
+.term-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.9rem;
+  border-bottom: 1px solid var(--steel);
+  background: var(--bg-deep);
+  flex-shrink: 0;
+}
+
+.term-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--arc-orange);
+  letter-spacing: 0.2em;
+}
+
+.term-x {
+  background: none;
+  border: none;
+  color: var(--arc-cream-dim);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 0 0.2rem;
+  transition: color 0.2s;
+}
+
+.term-x:hover {
+  color: var(--arc-orange);
+}
+
+.term-output {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem 1rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--arc-orange) var(--bg-deep);
+}
+
+.term-output::-webkit-scrollbar {
+  width: 3px;
+}
+
+.term-output::-webkit-scrollbar-thumb {
+  background: var(--arc-orange);
+}
+
+.term-line {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--arc-cream-dim);
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.term-line.term-cmd {
+  color: var(--arc-orange);
+}
+
+.term-inputrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1rem;
+  border-top: 1px solid var(--steel);
+  flex-shrink: 0;
+}
+
+.term-prompt {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--arc-orange);
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+}
+
+.term-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--arc-cream);
+  caret-color: var(--arc-orange);
+  letter-spacing: 0.05em;
+}
+
+.term-input::placeholder {
+  color: var(--steel-light);
+}
+
+/* ============================================================
+   SCROLL PROGRESS BAR
+============================================================ */
+.scroll-progress-track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 9999;
+  background: transparent;
+  pointer-events: none;
+}
+
+.scroll-progress-fill {
+  height: 100%;
+  background: var(--arc-orange);
+  box-shadow: 0 0 10px var(--arc-orange-glow);
+}
+
+
+/* ============================================================
+   CUSTOM CURSOR
+============================================================ */
+body,
+body * {
+  cursor: none !important;
+}
+
+.cursor-dot {
+  position: fixed;
+  top: -4px;
+  left: -4px;
+  width: 6px;
+  height: 6px;
+  background: var(--arc-orange);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  will-change: transform;
+  box-shadow: 0 0 6px var(--arc-orange);
+}
+
+.cursor-ring {
+  position: fixed;
+  top: -16px;
+  left: -16px;
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid var(--arc-orange);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  will-change: transform;
+  transition: width 0.2s, height 0.2s, top 0.2s, left 0.2s, border-color 0.2s, opacity 0.2s;
+  opacity: 0.6;
+}
+
+.cursor-ring.ring-hover {
+  width: 50px;
+  height: 50px;
+  top: -25px;
+  left: -25px;
+  border-color: var(--arc-orange);
+  opacity: 1;
+  box-shadow: 0 0 16px var(--arc-orange-glow);
+}
+
+/* ============================================================
+   CERTIFICATES SECTION
+============================================================ */
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+.cert-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem 1.25rem 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--steel);
+  border-left-width: 3px;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  position: relative;
+}
+
+.cert-card:hover {
+  transform: translateX(4px);
+  box-shadow: -4px 0 20px rgba(255, 107, 0, 0.08);
+}
+
+/* Colour accents */
+.cert-orange {
+  border-left-color: var(--arc-orange);
+}
+
+.cert-orange .cert-icon {
+  color: var(--arc-orange);
+}
+
+.cert-teal {
+  border-left-color: var(--arc-teal);
+}
+
+.cert-teal .cert-icon {
+  color: var(--arc-teal);
+}
+
+.cert-green {
+  border-left-color: var(--arc-green);
+}
+
+.cert-green .cert-icon {
+  color: var(--arc-green);
+}
+
+.cert-cream {
+  border-left-color: var(--arc-cream-dim);
+}
+
+.cert-cream .cert-icon {
+  color: var(--arc-cream-dim);
+}
+
+.cert-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.cert-body {
+  flex: 1;
+}
+
+.cert-category {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.25em;
+  color: var(--arc-cream-dim);
+  margin-bottom: 0.3rem;
+}
+
+.cert-name {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--arc-cream);
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+
+.cert-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cert-issuer {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--arc-cream-dim);
+}
+
+.cert-year {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--arc-orange);
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+@media(max-width: 768px) {
+  .certs-grid {
+    grid-template-columns: 1fr;
+  }
 }
