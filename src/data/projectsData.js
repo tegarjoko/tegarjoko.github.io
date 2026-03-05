@@ -1,3 +1,11 @@
+const PLACEHOLDER_IMAGES = [
+    '/proj_screen_1.png',
+    '/proj_screen_2.png',
+    '/proj_screen_3.png',
+    '/proj_screen_4.png',
+    '/proj_screen_5.png',
+];
+
 export const projectsData = [
     {
         id: 'proj-1',
@@ -6,9 +14,19 @@ export const projectsData = [
         label: 'INTERNSHIP SYSTEM',
         title: 'Internship Management System',
         tags: ['Laravel 11', 'FilamentPHP v3', 'MySQL', 'PDF Gen'],
-        desc: 'An end-to-end internship management platform with 15+ features across 3 user roles. Includes PDF generation, certificate downloads, and digital recruitment flow — deployed at PT Dankos Farma.',
+        desc: 'End-to-end internship management platform with 15+ features across 3 user roles — deployed at PT Dankos Farma.',
+        fullDesc: 'A comprehensive internship management platform built for PT Dankos Farma, a subsidiary of Kalbe Pharma Group. The system digitised the entire internship lifecycle — from recruitment and onboarding to evaluation and document generation — replacing a fully manual process across 3 user roles (Admin, Supervisor, Intern).',
+        features: [
+            '15+ modules across Admin, Supervisor, and Intern roles',
+            'Automated PDF generation for internship acceptance letters and certificates',
+            'Recruitment pipeline: application form → review → acceptance notification',
+            'Attendance and task monitoring with real-time status updates',
+            'Relational database design with Eloquent ORM (Laravel 11)',
+            'FilamentPHP v3 admin panel with custom Filament pages',
+        ],
         demoUrl: '#',
         codeUrl: '#',
+        images: PLACEHOLDER_IMAGES,
     },
     {
         id: 'proj-2',
@@ -17,9 +35,19 @@ export const projectsData = [
         label: 'WILDEXPLORER API',
         title: "WeWildExplorer's Companion API",
         tags: ['Node.js', 'Express.js', 'JWT', 'Google Cloud', 'MySQL'],
-        desc: 'RESTful API backend for the Android app "WeWildExplorer\'s Companion". Features JWT auth, Bcrypt encryption, Joi validation. Tested with Postman & ngrok, deployed on Google Cloud App Engine.',
+        desc: 'RESTful API for the Android app "WeWildExplorer\'s Companion". JWT auth, Bcrypt encryption, deployed on Google Cloud App Engine.',
+        fullDesc: "Backend API developed as part of the Bangkit 23H2 Capstone Project — an Android app that helps users identify and explore wildlife through AI-based species recognition. Built collaboratively in a team of 6, this API handles authentication, user data, and species data serving.",
+        features: [
+            'RESTful API with Express.js and structured route architecture',
+            'JWT-based authentication with Bcrypt password hashing',
+            'Joi request validation middleware for all endpoints',
+            'API testing with Postman and tunnel debugging via ngrok',
+            'Deployed to Google Cloud App Engine with App Engine YAML config',
+            'Integrated with Android app built by the mobile team',
+        ],
         demoUrl: '#',
         codeUrl: '#',
+        images: PLACEHOLDER_IMAGES,
     },
     {
         id: 'proj-3',
@@ -28,8 +56,18 @@ export const projectsData = [
         label: 'PORTFOLIO WEB',
         title: 'Personal Portfolio Website',
         tags: ['React', 'Vite', 'CSS', 'GitHub Pages'],
-        desc: 'Personal portfolio built with Vite + React featuring an ARC.SYS cyberpunk tactical theme. Includes particle canvas, glitch effects, scroll reveal animations, and full mobile responsiveness.',
-        demoUrl: '#',
+        desc: 'Personal portfolio built with Vite + React featuring an ARC.SYS cyberpunk tactical theme, particle canvas, and scroll animations.',
+        fullDesc: 'A personal portfolio website migrated from a single HTML file (1383 lines) into a modern Vite + React architecture. Designed with an ARC.SYS-inspired cyberpunk tactical aesthetic: orange dominant accent, visible grid background, and L-bracket UI elements. Fully responsive and deployed via GitHub Pages.',
+        features: [
+            'Vite + React component-based architecture',
+            'ARC.SYS tactical theme: orange accent, grid BG, L-bracket containers',
+            'Particle canvas animation with orange connection lines',
+            'Typewriter + glitch effect on hero section',
+            'Scroll-reveal animations via IntersectionObserver',
+            'Fully responsive for desktop and mobile',
+        ],
+        demoUrl: 'https://tegarjoko.github.io',
         codeUrl: 'https://github.com/tegarjoko/tegarjoko.github.io',
+        images: PLACEHOLDER_IMAGES,
     },
 ];

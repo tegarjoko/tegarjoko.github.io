@@ -1543,3 +1543,330 @@ footer span {
     font-size: 0.92rem;
   }
 }
+
+/* ============================================================
+   PROJECT MODAL
+============================================================ */
+
+/* Click hint overlay on card image */
+.proj-click-hint {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--arc-orange);
+  letter-spacing: 0.2em;
+  background: rgba(13, 14, 16, 0.75);
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.proj-card:hover .proj-click-hint {
+  opacity: 1;
+}
+
+.proj-card {
+  cursor: pointer;
+}
+
+/* Overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(5, 5, 7, 0.88);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: modalFadeIn 0.2s ease forwards;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal box */
+.modal-box {
+  position: relative;
+  background: var(--bg-panel);
+  border: 1px solid var(--steel);
+  width: 100%;
+  max-width: 760px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalSlideIn 0.25s ease forwards;
+  scrollbar-width: thin;
+  scrollbar-color: var(--arc-orange) var(--bg-deep);
+}
+
+.modal-box::-webkit-scrollbar {
+  width: 3px;
+}
+
+.modal-box::-webkit-scrollbar-thumb {
+  background: var(--arc-orange);
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* L-bracket corners on modal */
+.modal-box .c-tl,
+.modal-box .c-tr,
+.modal-box .c-bl,
+.modal-box .c-br {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--arc-orange);
+  border-style: solid;
+  pointer-events: none;
+}
+
+.modal-box .c-tl {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+
+.modal-box .c-tr {
+  top: -1px;
+  right: -1px;
+  border-width: 2px 2px 0 0;
+}
+
+.modal-box .c-bl {
+  bottom: -1px;
+  left: -1px;
+  border-width: 0 0 2px 2px;
+}
+
+.modal-box .c-br {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+/* Modal header */
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid var(--steel);
+}
+
+.modal-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--arc-orange);
+  letter-spacing: 0.3em;
+  margin-bottom: 0.4rem;
+}
+
+.modal-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 900;
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  color: #fff;
+  letter-spacing: 0.04em;
+}
+
+.modal-close {
+  background: none;
+  border: 1px solid var(--steel);
+  color: var(--arc-cream-dim);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  flex-shrink: 0;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.modal-close:hover {
+  border-color: var(--arc-orange);
+  color: var(--arc-orange);
+}
+
+/* Carousel */
+.modal-carousel {
+  position: relative;
+  background: var(--bg-deep);
+  overflow: hidden;
+  height: 280px;
+}
+
+.carousel-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(13, 14, 16, 0.8);
+  border: 1px solid var(--steel);
+  color: var(--arc-orange);
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: border-color 0.2s, background 0.2s;
+  z-index: 10;
+}
+
+.carousel-btn:hover {
+  border-color: var(--arc-orange);
+  background: rgba(255, 107, 0, 0.1);
+}
+
+.carousel-btn.prev {
+  left: 0.75rem;
+}
+
+.carousel-btn.next {
+  right: 0.75rem;
+}
+
+.carousel-counter {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.9rem;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--arc-orange);
+  background: rgba(13, 14, 16, 0.7);
+  padding: 0.2rem 0.5rem;
+  letter-spacing: 0.15em;
+}
+
+/* Dots */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.75rem 0 0;
+  background: var(--bg-panel);
+}
+
+.carousel-dot {
+  width: 20px;
+  height: 2px;
+  background: var(--steel-light);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 0;
+}
+
+.carousel-dot.active {
+  background: var(--arc-orange);
+}
+
+/* Modal body */
+.modal-body {
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.modal-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.modal-desc {
+  font-size: 0.9rem;
+  color: var(--arc-cream-dim);
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+}
+
+.modal-features {
+  list-style: none;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-features li {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--arc-cream-dim);
+  line-height: 1.6;
+  padding-left: 0.2rem;
+}
+
+.feat-bullet {
+  color: var(--arc-orange);
+  margin-right: 0.5rem;
+}
+
+.modal-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+@media(max-width: 600px) {
+  .modal-carousel {
+    height: 200px;
+  }
+
+  .modal-header {
+    padding: 1rem;
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+}
+
+/* Project card thumbnail */
+.proj-thumbnail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.85;
+  transition: opacity 0.25s;
+}
+
+.proj-card:hover .proj-thumbnail {
+  opacity: 0.5;
+}
