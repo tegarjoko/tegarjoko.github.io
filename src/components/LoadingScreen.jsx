@@ -39,7 +39,7 @@ export default function LoadingScreen({ onDone }) {
     return (
         <div id="loading" ref={wrapRef}>
             <div className="scanline-sweep"></div>
-            <div className="load-name" data-text="TEGAR JOKO">TEGAR JOKO</div>
+            <div className="load-name" data-text="WELCOME">WELCOME</div>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', width: 'min(400px,80vw)' }}>
                 <div className="load-bar-wrap">
                     <div className="load-bar-fill" ref={barRef}></div>
