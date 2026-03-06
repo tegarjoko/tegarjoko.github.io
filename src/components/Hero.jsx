@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useTypewriter } from '../hooks/useTypewriter';
 
-const TYPEWRITER_TEXTS = ['Software Developer', 'Back-end Developer', 'Full Stack Developer', 'Web Engineer'];
+const TYPEWRITER_TEXTS = ['Software Developer', 'Back-end Developer', 'Full Stack Developer', 'Formula 1 Enthusiast'];
 
 export default function Hero() {
     const canvasRef = useRef(null);
@@ -124,8 +124,8 @@ export default function Hero() {
 
             <div className="hero-content">
                 <div className="hero-label">// SYSTEM INITIALIZED — PORTFOLIO ONLINE</div>
-                <h1 className="hero-name" data-text="TEGAR JOKO KURNIAWAN" ref={nameRef}>
-                    TEGAR JOKO KURNIAWAN
+                <h1 className="hero-name" data-text="Hello, I'm Tegar Joko Kurniawan" ref={nameRef}>
+                    Hello, I'm Tegar Joko Kurniawan
                 </h1>
                 <div className="hero-subtitle">
                     <span className="hero-name-prefix">&gt;&gt; </span>
@@ -133,7 +133,7 @@ export default function Hero() {
                     <span className="cursor-blink" />
                 </div>
                 <p className="hero-desc">
-                    Software Developer<br />
+                    from<br />
                     Bekasi, Indonesia
                 </p>
                 <div className="hero-btns">
