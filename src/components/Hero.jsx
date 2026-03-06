@@ -130,7 +130,7 @@ export default function Hero() {
             </div>
 
             <div className="hero-content">
-                <div className="hero-label">// SYSTEM INITIALIZED — PORTFOLIO ONLINE</div>
+                <div className="hero-label">// SYSTEM INITIALIZED</div>
                 <h1 className="hero-name" data-text="Hello, I'm Tegar Joko Kurniawan" ref={nameRef}>
                     Hello, I'm Tegar Joko Kurniawan
                 </h1>
