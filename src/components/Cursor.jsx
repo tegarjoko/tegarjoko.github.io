@@ -1,10 +1,17 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function Cursor() {
     const dotRef = useRef(null);
     const ringRef = useRef(null);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
 
     useEffect(() => {
+        // Deteksi apakah perangkat menggunakan layar sentuh
+        if (window.matchMedia("(pointer: coarse)").matches || 'ontouchstart' in window || navigator.maxTouchPoints > 0) {
+            setIsTouchDevice(true);
+            return;
+        }
+
         const dot = dotRef.current;
         const ring = ringRef.current;
         if (!dot || !ring) return;
@@ -48,6 +55,8 @@ export default function Cursor() {
             cancelAnimationFrame(animId);
         };
     }, []);
+
+    if (isTouchDevice) return null;
 
     return (
         <>
