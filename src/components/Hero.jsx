@@ -42,16 +42,18 @@ export default function Hero() {
             dots.push({
                 x: Math.random() * (W || 800),
                 y: Math.random() * (H || 600),
-                vx: (Math.random() - 0.5) * 0.3,
-                vy: (Math.random() - 0.5) * 0.3,
+                baseVx: (Math.random() - 0.5) * 1.5, // Kecepatan dasar X
+                baseVy: (Math.random() - 0.5) * 1.5, // Kecepatan dasar Y
+                vx: 0,
+                vy: 0,
                 r: Math.random() * 1.5 + 0.8,
                 opacity: Math.random() * 0.5 + 0.2,
             });
         }
 
-        const REPEL_R = 120;
-        const REPEL_F = 4;
-        const DAMPING = 0.9;
+        const REPEL_R = window.innerWidth > 768 ? 150 : 100; // Radius interaksi lebih kecil di HP
+        const REPEL_F = 5;
+        const DAMPING = 0.92;
 
         const loop = () => {
             ctx.clearRect(0, 0, W, H);
@@ -59,7 +61,11 @@ export default function Hero() {
             const my = mouseRef.current.y;
 
             for (const d of dots) {
-                /* Mouse repel */
+                /* Gerakan independen (pergerakan dasar konstan) */
+                d.x += d.baseVx;
+                d.y += d.baseVy;
+
+                /* Interaksi sentuh/mouse (Repel) */
                 const dx = d.x - mx;
                 const dy = d.y - my;
                 const dist = Math.sqrt(dx * dx + dy * dy);
@@ -70,6 +76,7 @@ export default function Hero() {
                     d.vy += (dy / dist) * f;
                 }
 
+                // Aplikasikan kecepatan tambahan dari interaksi mouse
                 d.vx *= DAMPING;
                 d.vy *= DAMPING;
                 d.x += d.vx;
