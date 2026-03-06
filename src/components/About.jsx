@@ -29,15 +29,15 @@ export default function About() {
                             </p>
                             <p>
                                 I thrive on complex technical challenges, clean implementation details, and
-                                solid teamwork. Currently completing a Bachelor's degree in Information
-                                Technology at BSI with a <strong>GPA of 4.00</strong>.
+                                solid teamwork. Completed a Bachelor's degree in Information
+                                Technology at BSI University with a <strong>GPA of 4.00</strong>.
                             </p>
                         </div>
                         <div className="hud-panel">
                             {[
                                 { key: 'LOCATION', val: 'Bekasi, Indonesia' },
                                 { key: 'STATUS', val: null },
-                                { key: 'EDUCATION', val: 'S1 IT — BSI' },
+                                { key: 'EDUCATION', val: 'S1 IT — BSI University' },
                                 { key: 'GPA', val: '4.00 / 4.00' },
                                 { key: 'LANGUAGES', val: 'PHP · JS · Python' },
                             ].map(({ key, val }) => (
