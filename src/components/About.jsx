@@ -29,7 +29,7 @@ export default function About() {
                             </p>
                             <p>
                                 I thrive on complex technical challenges, clean implementation details, and
-                                solid teamwork. Completed a Bachelor's degree in Information
+                                solid teamwork. I have completed a Bachelor's degree in Information
                                 Technology at BSI University with a <strong>GPA of 4.00</strong>.
                             </p>
                         </div>
